@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=ProjectDb
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./project.sql:/docker-entrypoint-initdb.d/init.sql
+  app:
+    image: project
+    depends_on:
+      - mysqldb
+    ports:
+      - 6868:8080
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/ProjectDb?useSSL=false",
+        "spring.datasource.username" : "root",
+        "spring.datasource.password" : "root",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.hibernate.ddl-auto" : "update"
+      }'
+
+volumes:
+  mysql-data:
+#services:
+#  mysql:
+#    image: mysql:8.0
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=1234
+#      - MYSQL_DATABASE=ProjectDb
+#      - MYSQL_USER=admin
+#      - MYSQL_PASSWORD=123456
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+#      - ./project.sql:/docker-entrypoint-initdb.d/init.sql
+#  main:
+#    image: spring-project
+#    ports:
+#      - 8005:8080
+#    depends_on:
+#      - mysql
+#
+#volumes:
+#  mysql-data:
