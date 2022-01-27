@@ -5,18 +5,19 @@ import com.example.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+//    TODO_Check role annotation
     @GetMapping("/all-users")
     public @ResponseBody Iterable <UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @GetMapping(value = "/user/{id}")
+    @GetMapping(value = "/{id}")
     public UserEntity getDetail(@PathVariable("id") long id) {
         return userRepository.findOneById(id);
     }
