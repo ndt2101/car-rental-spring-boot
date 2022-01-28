@@ -1,5 +1,8 @@
 package com.example.project.base;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,14 +16,19 @@ public abstract class BaseEntity {
     @Column
     private String createdBy;
 
-    @Column
-    private Date createdAt;
+    @Basic(optional = false)
+    @CreationTimestamp
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt = new Date();
 
     @Column
     private String updatedBy;
 
-    @Column
-    private Date updatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt = new Date();
 
     public Long getId() {
         return id;
@@ -54,7 +62,8 @@ public abstract class BaseEntity {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    @PreUpdate
+    public void setUpdatedAt() {
+        this.updatedAt = new Date();
     }
 }
