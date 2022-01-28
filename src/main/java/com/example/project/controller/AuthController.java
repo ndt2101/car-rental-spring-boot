@@ -6,7 +6,9 @@ import com.example.project.exception.AppException;
 import com.example.project.repository.RoleRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.security.JwtTokenProvider;
+import com.example.project.security.UserPrincipal;
 import com.example.project.validator.payload.SignUpRequest;
+import com.example.project.validator.payload.SigninRequest;
 import com.example.project.validator.response.ApiResponse;
 import com.example.project.validator.response.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.project.utils.Constants.ROLE_CUSTOMER;
 
@@ -73,18 +77,22 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody UserEntity loginRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestBody SigninRequest signinRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
+                        signinRequest.getUsername(),
+                        signinRequest.getPassword()
                 )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
     }
 }

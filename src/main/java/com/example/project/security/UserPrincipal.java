@@ -23,13 +23,13 @@ public class UserPrincipal implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> roles;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String username, String password, Collection<? extends GrantedAuthority> roles) {
+    public UserPrincipal(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.authorities = authorities;
     }
 
     public static UserPrincipal create(UserEntity user) {
@@ -61,7 +61,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return authorities;
     }
 
     @Override
@@ -94,7 +94,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }
