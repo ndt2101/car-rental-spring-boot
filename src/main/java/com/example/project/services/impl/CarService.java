@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -47,9 +48,6 @@ public class CarService implements ICarService {
     @Autowired
     CarConvertor carConvertor;
 
-    @Autowired
-    ServletContext application;
-
     @Override
     public OutputCarDTO save(InputCarDTO inputCarDTO) {
         List<String> outputImageList = new  ArrayList<>();
@@ -60,7 +58,7 @@ public class CarService implements ICarService {
             UserEntity customer = userRepository.getById(inputCarDTO.getCustomerId());
             carEntity.setCustomer(customer);
         }
-        List<InputImageDTO> imageList = inputCarDTO.getImages();
+        List<MultipartFile> imageList = inputCarDTO.getImages();
         if (imageList != null){
             List<ImageEntity> imageEntityList = filesHandle(imageList, carEntity);
             carEntity.setImages(imageEntityList);
@@ -72,21 +70,20 @@ public class CarService implements ICarService {
         return carConvertor.toCarDTO(carEntity); // convert image -> list image -> cho vao output car -> tra ve
     }
 
-    private List<ImageEntity> filesHandle(List<InputImageDTO> imageList, CarEntity carEntity) {
+    private List<ImageEntity> filesHandle(List<MultipartFile> imageList, CarEntity carEntity) {
 
         List<ImageEntity> imageEntities = new ArrayList<>();
         imageList.forEach(inputImageDTO -> {
-            String imageName = StringUtils.cleanPath(Objects.requireNonNull(inputImageDTO.getSource().getOriginalFilename()));
+            String imageName = inputImageDTO.getOriginalFilename();
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setName(imageName);
-            imageEntity.setCarOfImage(carEntity); //
-            imageEntity.setDescription(inputImageDTO.getDescription());
+            imageEntity.setCarOfImage(carEntity);
             imageEntity = imageRepository.save(imageEntity);
             imageEntities.add(imageEntity);
 
-            String uploadDir = application.getRealPath("/") + "car-photos/" + carEntity.getId();
+            String uploadDir = "car-photos/" + carEntity.getId();
             try {
-                FileUploadUtil.saveFile(uploadDir, imageName, inputImageDTO.getSource());
+                FileUploadUtil.saveFile(uploadDir, imageName, inputImageDTO);
             } catch (IOException e) {
                 e.printStackTrace();
             }

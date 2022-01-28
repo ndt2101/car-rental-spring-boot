@@ -20,11 +20,11 @@ public class ImageEntity extends BaseEntity {
     @Column
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_id")
     private CarEntity carOfImage;
 
-    @Column
-    private String description;
+//    @Column
+//    private String description;
 
 }

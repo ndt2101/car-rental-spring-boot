@@ -3,6 +3,7 @@ package com.example.project.validator.payload;
 import com.example.project.base.BaseDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Null;
 import java.util.List;
@@ -31,5 +32,5 @@ public class InputCarDTO extends BaseDTO {
     private String description;
 
     @Null
-    private List<InputImageDTO> images;
+    private List<MultipartFile> images;
 }

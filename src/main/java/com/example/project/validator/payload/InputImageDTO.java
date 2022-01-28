@@ -17,5 +17,5 @@ public class InputImageDTO extends BaseDTO {
 
     private MultipartFile source;
 
-    private String description;
+//    private String description;
 }
