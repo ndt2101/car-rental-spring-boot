@@ -13,8 +13,6 @@ import java.util.List;
  * 23:29
  * 15 Jan 2022
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "cars")
 public class CarEntity extends BaseEntity {
@@ -42,7 +40,73 @@ public class CarEntity extends BaseEntity {
     @Column
     private String description;
 
-    @Nullable
-    @OneToMany(mappedBy = "carOfImage")
+
+    @OneToMany(mappedBy = "carOfImage",
+            cascade = CascadeType.MERGE)
     private List<ImageEntity> images;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserEntity owner) {
+        this.owner = owner;
+    }
+
+    public UserEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(UserEntity customer) {
+        this.customer = customer;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Nullable
+    public List<ImageEntity> getImages() {
+        return images;
+    }
+
+    public void setImages(@Nullable List<ImageEntity> images) {
+        this.images = images;
+    }
 }
