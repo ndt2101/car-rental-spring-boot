@@ -1,10 +1,7 @@
 package com.example.project.entity;
 
 import com.example.project.base.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.util.List;
 

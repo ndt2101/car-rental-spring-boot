@@ -24,7 +24,7 @@ public class ImageEntity extends BaseEntity {
     @JoinColumn(name = "car_id")
     private CarEntity carOfImage;
 
-//    @Column
-//    private String description;
+    @Column
+    private String description;
 
 }
