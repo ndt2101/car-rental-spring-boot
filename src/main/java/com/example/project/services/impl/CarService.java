@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,11 +64,14 @@ public class CarService implements ICarService {
             List<ImageEntity> imageEntityList = filesHandle(imageList, carEntity);
             carEntity.setImages(imageEntityList);
             imageEntityList.forEach(imageEntity -> {
-                outputImageList.add(imageEntity.getName());
+                outputImageList.add(Paths.get(System.getProperty("user.dir") + "car-photos/" + imageEntity.getCarOfImage().getId() + "/" + imageEntity.getName()).toString());
             });
         }
         carEntity = carRepository.save(carEntity);
-        return carConvertor.toCarDTO(carEntity); // convert image -> list image -> cho vao output car -> tra ve
+
+        OutputCarDTO outputCarDTO = carConvertor.toCarDTO(carEntity);
+        outputCarDTO.setImages(outputImageList);
+        return outputCarDTO;
     }
 
     private List<ImageEntity> filesHandle(List<MultipartFile> imageList, CarEntity carEntity) {
@@ -83,7 +87,8 @@ public class CarService implements ICarService {
 
             String uploadDir = "car-photos/" + carEntity.getId();
             try {
-                FileUploadUtil.saveFile(uploadDir, imageName, inputImageDTO);
+                String path = FileUploadUtil.saveFile(uploadDir, imageName, inputImageDTO);
+                imageEntity.setDescription(System.getProperty("user.dir") + path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
