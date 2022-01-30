@@ -51,8 +51,14 @@ public class CarService implements ICarService {
 
     @Override
     public OutputCarDTO save(InputCarDTO inputCarDTO) {
+        CarEntity carEntity;
         List<String> outputImageList = new  ArrayList<>();
-        CarEntity carEntity = mapper.map(inputCarDTO, CarEntity.class);
+        if(inputCarDTO.getId() != null) {
+            carEntity = carRepository.getById(inputCarDTO.getId());
+            carEntity = carConvertor.toCarEntity(inputCarDTO, carEntity);
+        } else {
+            carEntity = mapper.map(inputCarDTO, CarEntity.class);
+        }
         UserEntity owner = userRepository.getById(inputCarDTO.getOwnerId());
         carEntity.setOwner(owner);
         if (inputCarDTO.getCustomerId() != null) {
@@ -64,7 +70,7 @@ public class CarService implements ICarService {
             List<ImageEntity> imageEntityList = filesHandle(imageList, carEntity);
             carEntity.setImages(imageEntityList);
             imageEntityList.forEach(imageEntity -> {
-                outputImageList.add(Paths.get(System.getProperty("user.dir") + "car-photos/" + imageEntity.getCarOfImage().getId() + "/" + imageEntity.getName()).toString());
+                outputImageList.add(Paths.get(System.getProperty("user.dir") + "/car-photos/" + imageEntity.getCarOfImage().getId() + "/" + imageEntity.getName()).toString());
             });
         }
         carEntity = carRepository.save(carEntity);
@@ -82,7 +88,11 @@ public class CarService implements ICarService {
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setName(imageName);
             imageEntity.setCarOfImage(carEntity);
-            imageEntity = imageRepository.save(imageEntity);
+            try {
+                imageEntity = imageRepository.save(imageEntity);
+            } catch (Exception e) {
+
+            }
             imageEntities.add(imageEntity);
 
             String uploadDir = "car-photos/" + carEntity.getId();

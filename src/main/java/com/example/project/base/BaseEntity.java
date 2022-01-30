@@ -30,6 +30,10 @@ public abstract class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt = new Date();
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

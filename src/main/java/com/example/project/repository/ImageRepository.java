@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.Query;
  * 16 Jan 2022
  */
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
+    void deleteImageEntitiesByDescription(String description);
 }
