@@ -26,7 +26,7 @@ public class FileUploadUtil {
             Path filePath = uploadPath.resolve(fileName);
 
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            return filePath.toString();
+            return "\\" + filePath.toString();
         } catch (IOException ioException) {
             throw new IOException("Could not save image file: " + fileName, ioException);
         }

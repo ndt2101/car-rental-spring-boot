@@ -17,11 +17,11 @@ public class CarEntity extends BaseEntity {
     @Column
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "customer_Id")
     private UserEntity customer;
 

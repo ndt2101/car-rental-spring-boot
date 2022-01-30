@@ -3,6 +3,7 @@ package com.example.project.validator.payload;
 import com.example.project.base.BaseDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Null;

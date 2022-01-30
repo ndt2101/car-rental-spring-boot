@@ -1,7 +1,11 @@
 package com.example.project.convertor;
 
+import com.example.project.repository.CarRepository;
+import com.example.project.repository.UserRepository;
+import com.example.project.validator.payload.InputCarDTO;
 import com.example.project.validator.response.OutputCarDTO;
 import com.example.project.entity.CarEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,5 +32,21 @@ public class CarConvertor {
         outputCarDTO.setUpdatedAt(carEntity.getUpdatedAt());
         outputCarDTO.setCreatedBy(carEntity.getCreatedBy());
         return outputCarDTO;
+    }
+
+    /**
+     * cho truong hop update
+     */
+    public CarEntity toCarEntity(InputCarDTO carDTO, CarEntity carEntity) {
+        carEntity = new CarEntity();
+        if (carDTO.getId() != null) {
+            carEntity.setId(carDTO.getId());
+        }
+        carEntity.setType(carDTO.getType());
+        carEntity.setPlateNumber(carDTO.getPlateNumber());
+        carEntity.setBrand(carDTO.getBrand());
+        carEntity.setName(carDTO.getName());
+        carEntity.setDescription(carDTO.getDescription());
+        return carEntity;
     }
 }
