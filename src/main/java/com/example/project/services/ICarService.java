@@ -1,7 +1,13 @@
 package com.example.project.services;
 
 import com.example.project.validator.payload.InputCarDTO;
+import com.example.project.validator.response.ApiResponse;
 import com.example.project.validator.response.OutputCarDTO;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Create by Tuan
@@ -10,4 +16,7 @@ import com.example.project.validator.response.OutputCarDTO;
  */
 public interface ICarService {
     OutputCarDTO save(InputCarDTO inputCarDTO);
+    List<OutputCarDTO> getCars(@Nullable Map<String, String> params, Pageable pageable);
+    ApiResponse delete(Long id);
+    List<OutputCarDTO> getCars(Long carId);
 }

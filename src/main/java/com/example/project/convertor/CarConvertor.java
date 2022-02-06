@@ -34,6 +34,17 @@ public class CarConvertor {
         return outputCarDTO;
     }
 
+    public OutputCarDTO toCarDTOOnSearching(CarEntity carEntity) {
+        OutputCarDTO outputCarDTO = new OutputCarDTO();
+        outputCarDTO.setId(carEntity.getId());
+        outputCarDTO.setBrand(carEntity.getBrand());
+        if (carEntity.getCustomer() != null){
+            outputCarDTO.setCustomerId(carEntity.getCustomer().getId());
+        }
+        outputCarDTO.setName(carEntity.getName());
+        return outputCarDTO;
+    }
+
     /**
      * cho truong hop update
      */
