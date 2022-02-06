@@ -31,6 +31,7 @@ public class CarEntity extends BaseEntity {
     @Column
     private String type;
 
+
     @Column
     private String plateNumber;
 
