@@ -22,7 +22,11 @@ public class InputCarDTO extends BaseDTO {
 
     private Long ownerId;
 
-    private Long customerId;
+    private Long price;
+
+    private boolean available;
+
+    private boolean approved;
 
     private String brand;
 

@@ -2,7 +2,6 @@ package com.example.project.services.impl;
 
 import com.example.project.convertor.CarConvertor;
 import com.example.project.validator.payload.InputCarDTO;
-import com.example.project.validator.payload.InputImageDTO;
 import com.example.project.validator.response.ApiResponse;
 import com.example.project.validator.response.OutputCarDTO;
 import com.example.project.entity.CarEntity;
@@ -17,10 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -63,13 +60,10 @@ public class CarService implements ICarService {
             carEntity = carConvertor.toCarEntity(inputCarDTO, carEntity);
         } else {
             carEntity = mapper.map(inputCarDTO, CarEntity.class);
+            carEntity.setAvailable(true);
         }
         UserEntity owner = userRepository.getById(inputCarDTO.getOwnerId());
         carEntity.setOwner(owner);
-        if (inputCarDTO.getCustomerId() != null) {
-            UserEntity customer = userRepository.getById(inputCarDTO.getCustomerId());
-            carEntity.setCustomer(customer);
-        }
         List<MultipartFile> imageList = inputCarDTO.getImages();
         if (imageList != null){
             List<ImageEntity> imageEntityList = filesHandle(imageList, carEntity);
@@ -84,6 +78,18 @@ public class CarService implements ICarService {
         OutputCarDTO outputCarDTO = carConvertor.toCarDTO(carEntity);
         outputCarDTO.setImages(outputImageList);
         return outputCarDTO;
+    }
+
+    @Override
+    public ApiResponse save(long carId) {
+        CarEntity carEntity = carRepository.getById(carId);
+        carEntity.setApprove(true);
+        try {
+            carRepository.save(carEntity);
+        } catch (Exception e) {
+            return new ApiResponse(false, e.getMessage());
+        }
+        return new ApiResponse(true, "success");
     }
 
     @Override

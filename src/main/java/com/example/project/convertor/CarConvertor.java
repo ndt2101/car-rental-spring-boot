@@ -1,11 +1,9 @@
 package com.example.project.convertor;
 
-import com.example.project.repository.CarRepository;
-import com.example.project.repository.UserRepository;
 import com.example.project.validator.payload.InputCarDTO;
 import com.example.project.validator.response.OutputCarDTO;
 import com.example.project.entity.CarEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,9 +17,9 @@ public class CarConvertor {
         OutputCarDTO outputCarDTO = new OutputCarDTO();
         outputCarDTO.setId(carEntity.getId());
         outputCarDTO.setBrand(carEntity.getBrand());
-        if (carEntity.getCustomer() != null){
-            outputCarDTO.setCustomerId(carEntity.getCustomer().getId());
-        }
+//        if (carEntity.getCustomer() != null){
+//            outputCarDTO.setCustomerId(carEntity.getCustomer().getId());
+//        }
         outputCarDTO.setDescription(carEntity.getDescription());
         outputCarDTO.setName(carEntity.getName());
         outputCarDTO.setOwnerId(carEntity.getOwner().getId());
@@ -31,6 +29,8 @@ public class CarConvertor {
         outputCarDTO.setUpdatedBy(carEntity.getUpdatedBy());
         outputCarDTO.setUpdatedAt(carEntity.getUpdatedAt());
         outputCarDTO.setCreatedBy(carEntity.getCreatedBy());
+        outputCarDTO.setAvailable(carEntity.getAvailable());
+        outputCarDTO.setPrice(carEntity.getPrice());
         return outputCarDTO;
     }
 
@@ -38,9 +38,11 @@ public class CarConvertor {
         OutputCarDTO outputCarDTO = new OutputCarDTO();
         outputCarDTO.setId(carEntity.getId());
         outputCarDTO.setBrand(carEntity.getBrand());
-        if (carEntity.getCustomer() != null){
-            outputCarDTO.setCustomerId(carEntity.getCustomer().getId());
-        }
+        outputCarDTO.setPrice(carEntity.getPrice());
+        outputCarDTO.setAvailable(carEntity.getAvailable());
+//        if (carEntity.getCustomer() != null){
+//            outputCarDTO.setCustomerId(carEntity.getCustomer().getId());
+//        }
         outputCarDTO.setName(carEntity.getName());
         return outputCarDTO;
     }
@@ -49,7 +51,7 @@ public class CarConvertor {
      * cho truong hop update
      */
     public CarEntity toCarEntity(InputCarDTO carDTO, CarEntity carEntity) {
-        carEntity = new CarEntity();
+//        CarEntity carEntity = new CarEntity();
         if (carDTO.getId() != null) {
             carEntity.setId(carDTO.getId());
         }
@@ -58,6 +60,8 @@ public class CarConvertor {
         carEntity.setBrand(carDTO.getBrand());
         carEntity.setName(carDTO.getName());
         carEntity.setDescription(carDTO.getDescription());
+        carEntity.setPrice(carDTO.getPrice());
+        carEntity.setAvailable(carDTO.isAvailable());
         return carEntity;
     }
 }

@@ -21,9 +21,9 @@ public class CarEntity extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "customer_Id")
-    private UserEntity customer;
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "customer_Id")
+//    private UserEntity customer;
 
     @Column
     private String brand;
@@ -31,12 +31,20 @@ public class CarEntity extends BaseEntity {
     @Column
     private String type;
 
+    @Column
+    private Long price;
 
     @Column
     private String plateNumber;
 
     @Column
     private String description;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isApproved;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean available;
 
 
     @OneToMany(mappedBy = "carOfImage",
@@ -59,13 +67,13 @@ public class CarEntity extends BaseEntity {
         this.owner = owner;
     }
 
-    public UserEntity getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(UserEntity customer) {
-        this.customer = customer;
-    }
+//    public UserEntity getCustomer() {
+//        return customer;
+//    }
+//
+//    public void setCustomer(UserEntity customer) {
+//        this.customer = customer;
+//    }
 
     public String getBrand() {
         return brand;
@@ -81,6 +89,14 @@ public class CarEntity extends BaseEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public String getPlateNumber() {
@@ -106,5 +122,21 @@ public class CarEntity extends BaseEntity {
 
     public void setImages(@Nullable List<ImageEntity> images) {
         this.images = images;
+    }
+
+    public boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApprove(boolean approved) {
+        isApproved = approved;
+    }
+
+    public boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
