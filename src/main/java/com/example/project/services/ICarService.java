@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface ICarService {
     OutputCarDTO save(InputCarDTO inputCarDTO);
-    ApiResponse save(long carId);
+    ApiResponse approve(long carId);
     List<OutputCarDTO> getCars(@Nullable Map<String, String> params, Pageable pageable);
     ApiResponse delete(Long id);
     List<OutputCarDTO> getCars(Long carId);
