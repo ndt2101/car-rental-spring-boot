@@ -30,6 +30,10 @@ public class OutputCarDTO extends BaseDTO {
 
     private String description;
 
+    private boolean available;
+
+    private Long price;
+
     public String getName() {
         return name;
     }
@@ -92,5 +96,21 @@ public class OutputCarDTO extends BaseDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

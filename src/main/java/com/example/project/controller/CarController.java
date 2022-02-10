@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.Map;
  * 16 Jan 2022
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class CarController {
 
     @Autowired
@@ -75,6 +76,12 @@ public class CarController {
     @DeleteMapping(value = "/cars")
     public ApiResponse deleteCar(@ModelAttribute(name = "carId") Long carId) {
         return carService.delete(carId);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/approval/cars")
+    public ApiResponse approveCar(@ModelAttribute(name = "carId") Long carId) {
+        return carService.save(carId);
     }
 }
 
