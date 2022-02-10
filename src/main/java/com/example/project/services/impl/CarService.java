@@ -81,7 +81,7 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public ApiResponse save(long carId) {
+    public ApiResponse approve(long carId) {
         CarEntity carEntity = carRepository.getById(carId);
         carEntity.setApprove(true);
         try {

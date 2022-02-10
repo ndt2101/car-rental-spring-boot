@@ -81,7 +81,7 @@ public class CarController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/approval/cars")
     public ApiResponse approveCar(@ModelAttribute(name = "carId") Long carId) {
-        return carService.save(carId);
+        return carService.approve(carId);
     }
 }
 
